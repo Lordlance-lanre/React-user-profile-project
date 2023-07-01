@@ -6,6 +6,7 @@ import Dashboard from './components/Dashboard/Dashboard.js';
 import {Routes, Route} from 'react-router-dom';
 import Details from './components/Details/Details.js';
 import Edit from './components/Edit/Edit.js';
+// import Portal from "./components/Portal/Portal.js";
 
 function App() {
   return (
