@@ -13,21 +13,21 @@ const navigate = useNavigate();
 let headers = {
   'Content-Type': 'application/json'
 }
-let baseUrl = "https://patient-list.free.beeceptor.com/api/patient";
+let baseUrl = "https://fakerapi.it/api/v1/users?_quantity=10&_gender=male";
 
 useEffect(() =>{
   axios.get(baseUrl, {headers})
        .then((res) =>{
-        setUser(eval(res.data));
-        console.log("type>>>",typeof(eval(res.data)));
+        setUser(res.data.data);
+        console.log("res>>>", res.data.data);
        })
        .catch((err) =>{
         console.error("error>>",err)
        })
 },[])
 
-const searchElem = (elem) =>{
-  let input = elem.target.value;
+const searchElem = (e) =>{
+  let input = e.target.value;
   setSearch(input);
 }
 
@@ -71,27 +71,26 @@ const logOut = () =>{
 const moveToDetails = (e, item) =>{
   // console.log("route", item);
   e.preventDefault();
-  let moveDetails = JSON.stringify(item);
-   localStorage.setItem('Customers', moveDetails);
-  navigate(`/details/${item.firstName}`)
-  console.log(typeof(item.firstName));
+  let userDetails = JSON.stringify(item);
+   localStorage.setItem('Customers', userDetails);
+  navigate(`/details/${item.id}`)
+  console.log(typeof(item.firstname));
 }
 
 
 const showItems = user.filter((item) =>{
-  return search.toLowerCase() === "" ? item : item.firstName.toLowerCase().includes(search) ||
-  item.lastName.toLowerCase().includes(search) || 
-  item.phoneNumber.includes(search)
+  console.log("items>>", item)
+  return search.toLowerCase() === "" ? item : item.firstname.toLowerCase().includes(search) ||
+  item.lastname.toLowerCase().includes(search) || 
+  item.username.includes(search)
 }).map((item, index) =>{
   return(
           <tbody>
             <tr key={index + 1} className="text-xs ease-in-out duration-500 hover:bg-slate-100">
-              <td className=""><img src={item.id} alt="" className="rounded-full md:w-12"/></td>
-              <td className="px-4 py-2">{item.firstName} {item.lastName}</td>
-              <td className="px-4 py-2">{item.gender}</td>
-              <td className="px-4 py-2">{item.age}</td>
-              <td className="px-4 py-2">{item.phoneNumber}</td>
-              <td className="px-4 py-2">{item.address}</td>
+              
+              <td className="px-4 py-2">{item.firstname} {item.lastName}</td>
+              <td className="px-4 py-2">{item.lastname}</td>
+              <td className="px-4 py-2">{item.username}</td>
               <td className="px-16 py-2">
               <button onClick={(e)=>moveToDetails(e, item)} className="text-indigo-700 bg-indigo-200 px-2 font-bold py-3 text-[10px] rounded hover:bg-indigo-300 ">View Profile</button>
               </td>
@@ -135,7 +134,7 @@ const showItems = user.filter((item) =>{
   <div>
 
       <div className="flex justify-between mt-4">
-        <input type="text" onChange={searchElem} className="border-2 mx-2 w-[280px] md:w-[400px] px-4 font-semibold outline-indigo-200 text-xs py-3 rounded-lg" placeholder="Search for patient's name"/>
+        <input type="text" onChange={searchElem} className="border-2 ml-7 w-[280px] md:w-[400px] px-4 font-semibold outline-indigo-200 text-xs py-3 rounded-lg" placeholder="Search for patient's name"/>
         
         <div className="flex ml-32 md:ml-[290px]">
           <img src="./image/Vector (5).png" alt="" className=" w-5 h-5 mr-5 mt-2"/>
@@ -143,18 +142,15 @@ const showItems = user.filter((item) =>{
         </div>
       </div>
 
-      <p className="text-xl ml-3 pb-5 font-semibold mt-4">Patient List</p>
+      <p className="text-xl ml-7 pb-5 font-semibold mt-4">Patient List</p>
     
       <div className="px-4 relative overflow-x-auto shadow-lg">
-        <table className=" text-sm text-left relative overflow-x-auto">
+        <table className=" text-sm md:w-full text-left relative overflow-x-auto">
           <thead className="text-gray-700 ">
             <tr className="text-[9px] md:text-xs">
-              <th className="px-6 md:px-12 py-3 pb-9"></th>
-              <th className="px-4">NAME</th>
-              <th className="px-4">GENDER</th>
-              <th className="px-4">AGE</th>
-              <th className="px-4">PHONE NUMBER</th>
-              <th className="px-4">ADDRESS</th>
+              <th className="px-4">FIRSTNAME</th>
+              <th className="px-4">LASTNAME</th>
+              <th className="px-4">USERNAME</th>
               <th className="px-4"></th>
             </tr>
           </thead>
